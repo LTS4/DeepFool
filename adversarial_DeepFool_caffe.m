@@ -7,6 +7,7 @@
 %   INPUTS 
 %   x: image in W*H*C format
 %   net: Caffe's network (without loss layer - do not forget to enable 'force_backward')
+%   opts: A struct contains parameters (see README)
 %   OUTPUTS
 %   r_hat: minimum perturbation
 %   l_hat: adversarial label
@@ -23,7 +24,7 @@ l = f(x,1);
 adv = adversarial_perturbation(x,l,@Df,@f);
 
 l_hat = adv.new_label;
-r_hat = adv.r;
+r_hat = reshape(adv.r,size_x);
 itr = adv.itr;
 
     function out = f(y,flag)

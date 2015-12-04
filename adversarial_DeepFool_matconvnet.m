@@ -7,6 +7,7 @@
 %   INPUTS
 %   x: image in W*H*C format
 %   net: MatConvNet's network (without loss layer)
+%   opts: A struct contains parameters (see README)
 %   OUTPUTS
 %   r_hat: minimum perturbation
 %   l_hat: adversarial label
@@ -15,17 +16,21 @@
 %
 %   please cite: arXiv:1511.04599
 %%
-function [r_hat,l_hat,l,itr] = adversarial_DeepFool_matconvnet(x,net)
+function [r_hat,l_hat,l,itr] = adversarial_DeepFool_matconvnet(x,net,opts)
 size_x = size(x);
 c = numel(net.layers{end}.weights{2});
 
 x = reshape(x,numel(x),1);
 l=f(x,1);
 
-adv = adversarial_perturbation(x,l,@Df,@f);
+if(nargin==3)
+    adv = adversarial_perturbation(x,l,@Df,@f,opts);
+else
+    adv = adversarial_perturbation(x,l,@Df,@f);
+end
 
 l_hat = adv.new_label;
-r_hat = adv.r;
+r_hat = reshape(adv.r,size_x);
 itr = adv.itr;
 
     function out = f(y,flag)
