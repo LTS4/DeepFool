@@ -20,3 +20,11 @@ The arguments for both wrappers are:
 - `opts`: a structure which contains two fields:
   - `labels_limit`: limits the number of classes to test against (default = 10).
   - `overshoot`: used as a termination criterion to prevent vanishing updates (default = 0.02).
+
+###demo.m
+
+A simple demo which computes the adversarial perturbation for an image from MNIST dataset for a LeNet classifier. The image is loaded from a standard IMDB file.
+
+##Reference
+[1] S. Moosavi-Dezfooli, A. Fawzi, P. Frossard:
+*DeepFool: a simple and accurate method to fool deep neural networks*. [CoRR abs/1511.04599](http://arxiv.org/pdf/1511.04599) (2015)
