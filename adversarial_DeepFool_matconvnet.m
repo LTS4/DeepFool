@@ -36,7 +36,7 @@ itr = adv.itr;
     function out = f(y,flag)
         for i=1:c
             %do forward pass
-            res = vl_simplenn(net,single(reshape(y,size_x)),[],[],'disableDropout',true);
+            res = vl_simplenn(net,single(reshape(y,size_x)),[],[],'Mode','test');
             out(i) = res(end).x(i);
         end
         
@@ -54,7 +54,7 @@ itr = adv.itr;
             dzdy(idx(i)) = 1;
             
             %do forward-backward pass
-            res = vl_simplenn(net,single(reshape(y,size_x)),dzdy,[],'disableDropout',true);
+            res = vl_simplenn(net,single(reshape(y,size_x)),dzdy,[],'Mode','test');
             dzdx(:,i) = reshape(res(1).dzdx,prod(size_x),1);
         end
         dzdx = dzdx-repmat(dzdx(:,idx==label),1,numel(idx));
