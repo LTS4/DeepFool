@@ -10,7 +10,7 @@ if(nargin==5)
     if isfield(opts,'max_iter') MAX_ITER = opts.max_iter;end;
 end
 
-Df = @(y,idx) Df_base(y,l,idx);
+Df = @(y,idx) Df_base(y,l,idx); 
 
 ff = f_out(x,0);
 ff = ff-ff(l);
