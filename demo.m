@@ -7,6 +7,7 @@ opts.labels_limit = 10;%number of classes to be considered
 opts.overshoot = 0.02; %overshoot for early termination
 
 load('resources/net');
+net = vl_simplenn_tidy(net); %add compatibility to newer versions of MatConvNet
 net.layers(end) = [];
 
 x = images.data;
