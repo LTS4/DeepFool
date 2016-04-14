@@ -14,7 +14,8 @@
 %   l: classified label
 %   itr: number of iterations
 %
-%   please cite: arXiv:1511.04599
+%   please cite: S. Moosavi-Dezfooli, A. Fawzi, P. Frossard: DeepFool: a simple and accurate method to fool deep neural networks.
+%                In Computer Vision and Pattern Recognition (CVPR ’16), IEEE, 2016.
 %%
 function [r_hat,l_hat,l,itr] = adversarial_DeepFool_caffe(x,net)
 size_x = size(x);
