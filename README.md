@@ -27,4 +27,4 @@ A simple demo which computes the adversarial perturbation for an image from MNIS
 
 ##Reference
 [1] S. Moosavi-Dezfooli, A. Fawzi, P. Frossard:
-*DeepFool: a simple and accurate method to fool deep neural networks*. [CoRR abs/1511.04599](http://arxiv.org/pdf/1511.04599) (2015)
+*DeepFool: a simple and accurate method to fool deep neural networks*.  In Computer Vision and Pattern Recognition (CVPR ’16), IEEE, 2016.
