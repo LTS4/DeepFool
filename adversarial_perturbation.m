@@ -1,10 +1,13 @@
 function adv = adversarial_perturbation(x,l,Df_base,f_out,opts)
+NUM_LABELS = 10;
+OS = 0.02;
+Q = 2;
+MAX_ITER = 100;
 if(nargin==5)
-    NUM_LABELS = opts.labels_limit;
-    OS = opts.overshoot;
-else
-    NUM_LABELS = 10;
-    OS = 0.02;
+    if isfield(opts,'labels_limit') NUM_LABELS = opts.labels_limit;end;
+    if isfield(opts,'overshoot') OS = opts.overshoot;end;
+    if isfield(opts,'norm_p') Q = opts.norm_p/(opts.norm_p-1);end;
+    if isfield(opts,'max_iter') MAX_ITER = opts.max_iter;end;
 end
 
 Df = @(y,idx) Df_base(y,l,idx);
@@ -18,7 +21,7 @@ r = x*0;
 x_u = x;
 
 itr = 0;
-while(f_out(x+(1+OS)*r,1)==l && itr<100)
+while(f_out(x+(1+OS)*r,1)==l && itr<MAX_ITER)
     itr = itr + 1;
         
     ff = f_out(x_u,0);
@@ -38,8 +41,8 @@ adv.new_label = f_out(x+(1+OS)*r,1);
 adv.itr = itr;
 end
 
-function dir = project_on_polyhedron(Df,f)
-res = abs(f)./sqrt(sum(Df.*Df));
+function dir = project_on_polyhedron(Df,f,Q)
+res = abs(f)./arrayfun(@(idx) norm(Df(:,idx),Q), 1:size(Df,2));
 [~,ii]=min(res);
-dir = res(ii)*Df(:,ii)/norm(Df(:,ii));
+dir = res(ii)*(abs(Df(:,ii))/norm(Df(:,ii),Q)).^(Q-1).*sign(Df(:,ii));
 end
