@@ -17,10 +17,12 @@ The arguments for both wrappers are:
 
 - `x`: input image in `W*H*C` format
 - `net`: network model where the last layer (loss) is removed.
-- `opts`: a structure which contains two fields:
+- `opts`: a structure containing the following options:
   - `labels_limit`: limits the number of classes to test against (default = 10).
   - `overshoot`: used as a termination criterion to prevent vanishing updates (default = 0.02).
-
+  - `max_iter`: maximum number of iterations (default = 100).
+  - `norm_p`: determines which l_p norm to use (see [[1]](http://arxiv.org/pdf/1511.04599)) (default = 2).
+  
 ###demo.m
 
 A simple demo which computes the adversarial perturbation for an image from MNIST dataset for a LeNet classifier. The image is loaded from a standard IMDB file.
