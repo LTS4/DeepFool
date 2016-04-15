@@ -30,7 +30,7 @@ while(f_out(x+(1+OS)*r,1)==l && itr<MAX_ITER)
     idx = [l labels];
     ddf = Df(x_u,idx);
     
-    dr = project_on_polyhedron(ddf,ff(idx));
+    dr = project_boundary_polyhedron(ddf,ff(idx),Q);
        
     x_u = x_u+dr;
     r = r + dr;
@@ -41,7 +41,7 @@ adv.new_label = f_out(x+(1+OS)*r,1);
 adv.itr = itr;
 end
 
-function dir = project_on_polyhedron(Df,f,Q)
+function dir = project_boundary_polyhedron(Df,f,Q)
 res = abs(f)./arrayfun(@(idx) norm(Df(:,idx),Q), 1:size(Df,2));
 [~,ii]=min(res);
 dir = res(ii)*(abs(Df(:,ii))/norm(Df(:,ii),Q)).^(Q-1).*sign(Df(:,ii));
