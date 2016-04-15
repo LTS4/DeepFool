@@ -13,3 +13,7 @@ net.layers(end) = [];
 x = images.data;
 [r,adversarial_label,clean_label,itr] = adversarial_DeepFool_matconvnet(x,net,opts);
 
+figure(1); 
+subplot(1,3,1); imagesc(x); colormap gray; title('Original image');
+subplot(1,3,2); imagesc(x+r); colormap gray; title('Perturbed image');
+subplot(1,3,3); imagesc(r); colormap gray; title('Perturbation [scaled]');
