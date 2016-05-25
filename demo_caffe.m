@@ -1,4 +1,4 @@
-% This demo shows how to find the adversarial perturbation for an MNIST classifier
+% This demo shows how to find the adversarial perturbation for CaffeNet.
 clear;
 
 %Load MatCaffe
