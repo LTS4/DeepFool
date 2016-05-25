@@ -32,7 +32,7 @@ image = imresize(image, [IMAGE_DIM IMAGE_DIM], 'bilinear');  % resize im_data
 image = image - mean_data;  % subtract mean_data (already in W x H x C, BGR)
 x = image(1:227,1:227,:);
     
-[r,l_fooling,l_clean,itr] = adversarial_DeepFool_caffe(x,net,opts);
+[r,l_fooling,l_clean,itr] = adversarial_DeepFool_caffe(x,net);
 
 caffe.reset_all(); % reset caffe
 
