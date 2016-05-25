@@ -15,14 +15,18 @@
 %   itr: number of iterations
 %
 %   please cite: S. Moosavi-Dezfooli, A. Fawzi, P. Frossard: DeepFool: a simple and accurate method to fool deep neural networks.
-%                In Computer Vision and Pattern Recognition (CVPR ’16), IEEE, 2016.
+%                In Computer Vision and Pattern Recognition (CVPR ???16), IEEE, 2016.
 %%
-function [r_hat,l_hat,l,itr] = adversarial_DeepFool_caffe(x,net)
+function [r_hat,l_hat,l,itr] = adversarial_DeepFool_caffe(x,net,opts)
 size_x = size(x);
 x = reshape(x,numel(x),1);
 l = f(x,1);
 
-adv = adversarial_perturbation(x,l,@Df,@f);
+if(nargin==3)
+    adv = adversarial_perturbation(x,l,@Df,@f,opts);
+else
+    adv = adversarial_perturbation(x,l,@Df,@f);
+end
 
 l_hat = adv.new_label;
 r_hat = reshape(adv.r,size_x);

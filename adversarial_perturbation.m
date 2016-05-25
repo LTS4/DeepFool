@@ -6,7 +6,12 @@ MAX_ITER = 100;
 if(nargin==5)
     if isfield(opts,'labels_limit') NUM_LABELS = opts.labels_limit;end;
     if isfield(opts,'overshoot') OS = opts.overshoot;end;
-    if isfield(opts,'norm_p') Q = opts.norm_p/(opts.norm_p-1);end;
+    if isfield(opts,'norm_p') 
+        Q = opts.norm_p/(opts.norm_p-1);
+        if opts.norm_p==Inf
+            Q = 1;
+        end
+    end
     if isfield(opts,'max_iter') MAX_ITER = opts.max_iter;end;
 end
 
@@ -44,5 +49,11 @@ end
 function dir = project_boundary_polyhedron(Df,f,Q)
 res = abs(f)./arrayfun(@(idx) norm(Df(:,idx),Q), 1:size(Df,2));
 [~,ii]=min(res);
-dir = res(ii)*(abs(Df(:,ii))/norm(Df(:,ii),Q)).^(Q-1).*sign(Df(:,ii));
+if isinf(Q)
+    dir = res(ii).*(abs(Df(:,ii))>=max(Df(:,ii))).*sign(Df(:,ii));
+elseif(Q==1)
+    dir = res(ii).*sign(Df(:,ii));
+else
+    dir = res(ii)*(abs(Df(:,ii))/norm(Df(:,ii),Q)).^(Q-1).*sign(Df(:,ii));
+end
 end

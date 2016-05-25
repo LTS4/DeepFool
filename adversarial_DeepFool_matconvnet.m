@@ -7,7 +7,7 @@
 %   INPUTS
 %   x: image in W*H*C format
 %   net: MatConvNet's network (without loss layer)
-%   opts: A struct contains parameters (see README)
+%   opts: A struct containing parameters (see README)
 %   OUTPUTS
 %   r_hat: minimum perturbation
 %   l_hat: adversarial label
@@ -15,7 +15,7 @@
 %   itr: number of iterations
 %
 %   please cite: S. Moosavi-Dezfooli, A. Fawzi, P. Frossard: DeepFool: a simple and accurate method to fool deep neural networks.
-%                In Computer Vision and Pattern Recognition (CVPR ’16), IEEE, 2016.
+%                In Computer Vision and Pattern Recognition (CVPR ???16), IEEE, 2016.
 %%
 function [r_hat,l_hat,l,itr] = adversarial_DeepFool_matconvnet(x,net,opts)
 size_x = size(x);
