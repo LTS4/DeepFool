@@ -35,11 +35,9 @@ r_hat = reshape(adv.r,size_x);
 itr = adv.itr;
 
     function out = f(y,flag)
-        for i=1:c
-            %do forward pass
-            res = vl_simplenn(net,single(reshape(y,size_x)),[],[],'Mode','test');
-            out(i) = res(end).x(i);
-        end
+        %do forward pass
+        res = vl_simplenn(net,single(reshape(y,size_x)),[],[],'Mode','test');
+        out = res(end).x(:)';
         
         %flag==0:compute the outputs
         %flag==1:compute the label
