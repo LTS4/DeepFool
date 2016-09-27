@@ -19,10 +19,11 @@
 %%
 function [r_hat,l_hat,l,itr] = adversarial_DeepFool_matconvnet(x,net,opts)
 size_x = size(x);
-c = numel(net.layers{end}.weights{2});
 
 x = reshape(x,numel(x),1);
-l=f(x,1);
+out = f(x,0);
+c = numel(out);
+[~,l] = max(out);
 
 if(nargin==3)
     adv = adversarial_perturbation(x,l,@Df,@f,opts);
