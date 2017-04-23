@@ -1,6 +1,8 @@
 # DeepFool
 DeepFool is a simple algorithm to find the minimum adversarial perturbations in deep networks
 
+__Note__: For Python (tensorflow) implementation, please refer to [https://github.com/LTS4/universal/blob/master/python/deepfool.py].
+
 ###adversarial_perturbation.m
 
 This function implements the algorithm proposed in [[1]](http://arxiv.org/pdf/1511.04599) to find the adverasrial perturbation.
