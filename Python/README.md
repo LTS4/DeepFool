@@ -3,11 +3,11 @@ DeepFool is a simple algorithm to find the minimum adversarial perturbations in 
 
 ### deepfool.py
 
-This function implements the algorithm proposed in [[1]](http://arxiv.org/pdf/1511.04599) to find the adverasrial perturbation.
+This function implements the algorithm proposed in [[1]](http://arxiv.org/pdf/1511.04599) using PyTorch to find adverasrial perturbations.
 
 __Note__: The final softmax (loss) layer should be removed in order to prevent numerical instabilities.
 
-The parameters of the wrapper are:
+The parameters of the function are:
 
 - `image`: Image of size `HxWx3d`
 - `f`: feedforward function (input: images, output: values of activation **BEFORE** softmax).
