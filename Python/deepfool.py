@@ -9,8 +9,7 @@ def deepfool(image, net, num_classes=10, overshoot=0.02, max_iter=50):
 
     """
        :param image: Image of size HxWx3
-       :param f: feedforward function (input: images, output: values of activation **BEFORE** softmax).
-       :param grads: gradient functions with respect to input (as many gradients as classes).
+       :param net: network (input: images, output: values of activation **BEFORE** softmax).
        :param num_classes: num_classes (limits the number of classes to test against, by default = 10)
        :param overshoot: used as a termination criterion to prevent vanishing updates (default = 0.02).
        :param max_iter: maximum number of iterations for deepfool (default = 10)
