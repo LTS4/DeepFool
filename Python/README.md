@@ -3,7 +3,7 @@ DeepFool is a simple algorithm to find the minimum adversarial perturbations in 
 
 ### deepfool.py
 
-This function implements the algorithm proposed in [[1]](http://arxiv.org/pdf/1511.04599) using PyTorch to find adverasrial perturbations.
+This function implements the algorithm proposed in [[1]](http://arxiv.org/pdf/1511.04599) using PyTorch to find adversarial perturbations.
 
 __Note__: The final softmax (loss) layer should be removed in order to prevent numerical instabilities.
 
@@ -14,7 +14,7 @@ The parameters of the function are:
 - `grads`: gradient functions with respect to input (as many gradients as classes).
 - `num_classes`: limits the number of classes to test against, by default = 10.
 
-### test_deepfool.m
+### test_deepfool.py
 
 A simple demo which computes the adversarial perturbation for a test image from ImageNet dataset.
 
