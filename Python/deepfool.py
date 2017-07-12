@@ -12,7 +12,7 @@ def deepfool(image, net, num_classes=10, overshoot=0.02, max_iter=50):
        :param net: network (input: images, output: values of activation **BEFORE** softmax).
        :param num_classes: num_classes (limits the number of classes to test against, by default = 10)
        :param overshoot: used as a termination criterion to prevent vanishing updates (default = 0.02).
-       :param max_iter: maximum number of iterations for deepfool (default = 10)
+       :param max_iter: maximum number of iterations for deepfool (default = 50)
        :return: minimal perturbation that fools the classifier, number of iterations that it required, new estimated_label and perturbed image
     """
 
