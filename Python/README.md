@@ -10,9 +10,9 @@ __Note__: The final softmax (loss) layer should be removed in order to prevent n
 The parameters of the function are:
 
 - `image`: Image of size `HxWx3d`
-- `f`: feedforward function (input: images, output: values of activation **BEFORE** softmax).
-- `grads`: gradient functions with respect to input (as many gradients as classes).
+- `net`: neural network (input: images, output: values of activation **BEFORE** softmax).
 - `num_classes`: limits the number of classes to test against, by default = 10.
+- `max_iter`: max number of iterations, by default = 50.
 
 ### test_deepfool.py
 
