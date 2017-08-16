@@ -15,7 +15,6 @@ def deepfool(image, net, num_classes=10, overshoot=0.02, max_iter=50):
        :param max_iter: maximum number of iterations for deepfool (default = 50)
        :return: minimal perturbation that fools the classifier, number of iterations that it required, new estimated_label and perturbed image
     """
-
     is_cuda = torch.cuda.is_available()
 
     if is_cuda:
@@ -33,8 +32,7 @@ def deepfool(image, net, num_classes=10, overshoot=0.02, max_iter=50):
     label = I[0]
 
     input_shape = image.cpu().numpy().shape
-    pert_image = image
-
+    pert_image = copy.deepcopy(image)
     w = np.zeros(input_shape)
     r_tot = np.zeros(input_shape)
 
@@ -46,15 +44,16 @@ def deepfool(image, net, num_classes=10, overshoot=0.02, max_iter=50):
     k_i = label
 
     while k_i == label and loop_i < max_iter:
+        print(loop_i)
 
         pert = np.inf
-        fs[0, I[0]].backward(retain_variables=True)
+        fs[0, I[0]].backward(retain_graph=True)
         grad_orig = x.grad.data.cpu().numpy().copy()
 
         for k in range(1, num_classes):
             zero_gradients(x)
 
-            fs[0, I[k]].backward(retain_variables=True)
+            fs[0, I[k]].backward(retain_graph=True)
             cur_grad = x.grad.data.cpu().numpy().copy()
 
             # set new w_k and new f_k
@@ -78,7 +77,7 @@ def deepfool(image, net, num_classes=10, overshoot=0.02, max_iter=50):
             pert_image = image + (1+overshoot)*torch.from_numpy(r_tot)
 
         x = Variable(pert_image, requires_grad=True)
-        fs = net.forward(x[None, :])
+        fs = net.forward(x)
         k_i = np.argmax(fs.data.cpu().numpy().flatten())
 
         loop_i += 1

@@ -20,7 +20,6 @@ net = models.resnet34(pretrained=True)
 net.eval()
 
 im_orig = Image.open('test_im2.jpg')
-# im_orig = Image.open('/datasets2/ILSVRC2012/train/n01440764/n01440764_30045.JPEG')
 
 mean = [ 0.485, 0.456, 0.406 ]
 std = [ 0.229, 0.224, 0.225 ]
@@ -44,12 +43,20 @@ str_label_pert = labels[np.int(label_pert)].split(',')[0]
 print("Original label = ", str_label_orig)
 print("Perturbed label = ", str_label_pert)
 
+def clip_tensor(A, minv, maxv):
+    A = torch.max(A, minv*torch.ones(A.shape))
+    A = torch.min(A, maxv*torch.ones(A.shape))
+    return A
+
+clip = lambda x: clip_tensor(x, 0, 255)
+
 tf = transforms.Compose([transforms.Normalize(mean=[0, 0, 0], std=map(lambda x: 1 / x, std)),
                         transforms.Normalize(mean=map(lambda x: -x, mean), std=[1, 1, 1]),
+                        transforms.Lambda(clip),
                         transforms.ToPILImage(),
                         transforms.CenterCrop(224)])
 
 plt.figure()
-plt.imshow(np.clip(tf(pert_image.cpu()), 0, 255))
+plt.imshow(tf(pert_image.cpu()[0]))
 plt.title(str_label_pert)
 plt.show()
