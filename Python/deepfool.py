@@ -44,7 +44,6 @@ def deepfool(image, net, num_classes=10, overshoot=0.02, max_iter=50):
     k_i = label
 
     while k_i == label and loop_i < max_iter:
-        print(loop_i)
 
         pert = np.inf
         fs[0, I[0]].backward(retain_graph=True)
