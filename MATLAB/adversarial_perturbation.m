@@ -50,7 +50,7 @@ function dir = project_boundary_polyhedron(Df,f,Q)
 res = abs(f)./arrayfun(@(idx) norm(Df(:,idx),Q), 1:size(Df,2));
 [~,ii]=min(res);
 if isinf(Q)
-    dir = res(ii).*(abs(Df(:,ii))>=max(Df(:,ii))).*sign(Df(:,ii));
+    dir = res(ii).*(abs(Df(:,ii))>=max(abs(Df(:,ii)))).*sign(Df(:,ii));
 elseif(Q==1)
     dir = res(ii).*sign(Df(:,ii));
 else
