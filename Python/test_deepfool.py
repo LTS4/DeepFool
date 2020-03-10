@@ -15,7 +15,7 @@ from deepfool import deepfool
 import os
 
 # Number of images to perturb
-N = 100
+N = 118
 # List to hold L2 norms of r for all perturbed images so rho can be caluclated at the end
 r_arr = []
 # List to hold original labels
@@ -28,6 +28,8 @@ L2_norms = []
 orig_imgs = []
 # Cumulative sum for rho
 rho_sum = 0
+
+iter = 0
 
 # Network you're using (can change to whatever)
 net = models.googlenet(pretrained=True)
@@ -46,8 +48,10 @@ for (root, dirs, files) in os.walk("ILSVRC2012_img_val", topdown=True):
 
 # Now for every image:
 for i in range(N):
+        iter = iter + 1
+        print("Iteration: ", iter)
         # Something wrong with this image, this is a patch fix
-        if (sorted_files[i] != "ILSVRC2012_val_00000034.JPEG"):
+        if (sorted_files[i] != "ILSVRC2012_val_00000034.JPEG") and (sorted_files[i] != "ILSVRC2012_val_00000107.JPEG") and (sorted_files[i] != "ILSVRC2012_val_00000118.JPEG"):
                 # Open image in directory (traverse from top down)
                 orig_img = Image.open("ILSVRC2012_img_val/" + sorted_files[i])
 
@@ -111,15 +115,15 @@ for i in range(N):
                         tf(pert_image.cpu()[0]).save('pert_imgs/' + sorted_files[i], 'JPEG')
     
 
-                        ## Commented this out because u probably don't want a bunch of images popping up
+                ## Commented this out because u probably don't want a bunch of images popping up
         
-                        #plt.figure()
-                        #plt.imshow(tf(pert_image.cpu()[0]))
-                        #plt.title(str_label_pert)
-                        #plt.show()
+                #plt.figure()
+                #plt.imshow(tf(pert_image.cpu()[0]))
+                #plt.title(str_label_pert)
+                #plt.show()
 
-                        # Add to cumulative sum term to get rho (See eqn 15 in DeepFool paper)
-                        rho_sum = rho_sum + r_norm/np.linalg.norm(img_vect)
+                # Add to cumulative sum term to get rho (See eqn 15 in DeepFool paper)
+                rho_sum = rho_sum + r_norm / np.linalg.norm(img_vect)
 
 # Compute average robustness (rho) for the simulation (See eqn 15 in DeepFool paper)
 rho = (1/N)*rho_sum
