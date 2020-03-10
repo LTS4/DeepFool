@@ -100,7 +100,7 @@ for i in range(n):
 plt.show()
 plt.close()
 
-# Our written code to apply the VAE
+# Our written code to apply the VAE to a set of test images
 def apply_vea(x_test):
     encoder = keras.models.load_model('vae_encoder.h5')
     decoder = keras.models.load_model('vae_decoder.h5')
