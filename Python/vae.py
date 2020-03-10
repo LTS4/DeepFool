@@ -1,3 +1,5 @@
+# Code adapted from https://github.com/lbun/VAE_Variational_Autoencoders
+
 import warnings
 warnings.filterwarnings('ignore')
 import numpy as np
@@ -11,6 +13,7 @@ import glob2 as glob
 from numpy import random
 from keras.datasets import mnist
 import numpy as np
+
 
 # dimensionality of the latents space 
 embedding_dim = 32 
@@ -74,7 +77,8 @@ encoder.save('vae_encoder.h5')
 decoder.save('vae_decoder.h5')
 
 # how to import model back in 
-new_model = keras.models.load_model('vae_mnist_autoencoder.h5')
+encoder = keras.models.load_model('vae_encoder.h5')
+decoder = keras.models.load_model('vae_decoder.h5')
 
 encoded_imgs = encoder.predict(x_test) 
 decoded_imgs = decoder.predict(encoded_imgs)  
@@ -95,3 +99,13 @@ for i in range(n):
     
 plt.show()
 plt.close()
+
+# Our written code to apply the VAE
+def apply_vea(x_test):
+    encoder = keras.models.load_model('vae_encoder.h5')
+    decoder = keras.models.load_model('vae_decoder.h5')
+
+    encoded_imgs = encoder.predict(x_test) 
+    decoded_imgs = decoder.predict(encoded_imgs)
+
+    return decoded_imgs
