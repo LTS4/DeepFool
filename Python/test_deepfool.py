@@ -43,7 +43,7 @@ def clip_tensor(A, minv, maxv):
     return A
 
 # Get list of files in ImageNet directory (you gotta save this in DeepFool/Python to get it to work like this)
-for (root, dirs, files) in os.walk("ILSVRC2012_img_val", topdown=True):
+for (root, dirs, files) in os.walk("../data/ILSVRC2012_img_val", topdown=True):
     sorted_files = sorted(files, key=lambda item: int(item[18:23]))
 
 # Now for every image:
@@ -53,7 +53,7 @@ for i in range(N):
     # Something wrong with this image, this is a patch fix
     if (sorted_files[i] != "ILSVRC2012_val_00000034.JPEG") and (sorted_files[i] != "ILSVRC2012_val_00000107.JPEG") and (sorted_files[i] != "ILSVRC2012_val_00000118.JPEG"):
         # Open image in directory (traverse from top down)
-        orig_img = Image.open("ILSVRC2012_img_val/" + sorted_files[i])
+        orig_img = Image.open("../data/ILSVRC2012_img_val/" + sorted_files[i])
 
 
         mean = [ 0.485, 0.456, 0.406 ]
