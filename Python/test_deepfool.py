@@ -149,5 +149,5 @@ def main():
     rho = (1/N)*rho_sum
     print("Average robustness:", rho)
 
-if __name__ == __main__:
+if __name__ == "__main__":
     main()
