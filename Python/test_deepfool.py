@@ -13,9 +13,10 @@ import torchvision.models as models
 from PIL import Image
 from deepfool import deepfool
 import os
+import cv2
 
 # Number of images to perturb
-N = 118
+N = 1000
 # List to hold L2 norms of r for all perturbed images so rho can be caluclated at the end
 r_arr = []
 # List to hold original labels
@@ -29,7 +30,7 @@ orig_imgs = []
 # Cumulative sum for rho
 rho_sum = 0
 
-iter = 0
+j = 0
 
 # Network you're using (can change to whatever)
 net = models.googlenet(pretrained=True)
@@ -43,19 +44,15 @@ def clip_tensor(A, minv, maxv):
     return A
 
 # Get list of files in ImageNet directory (you gotta save this in DeepFool/Python to get it to work like this)
-for (root, dirs, files) in os.walk("../data/ILSVRC2012_img_val", topdown=True):
+for (root, dirs, files) in os.walk("ILSVRC2012_img_val", topdown=True):
     sorted_files = sorted(files, key=lambda item: int(item[18:23]))
 
 # Now for every image:
 for i in range(N):
-    iter = iter + 1
-    print("Iteration: ", iter)
-    # Something wrong with this image, this is a patch fix
-    if (sorted_files[i] != "ILSVRC2012_val_00000034.JPEG") and (sorted_files[i] != "ILSVRC2012_val_00000107.JPEG") and (sorted_files[i] != "ILSVRC2012_val_00000118.JPEG"):
-        # Open image in directory (traverse from top down)
-        orig_img = Image.open("../data/ILSVRC2012_img_val/" + sorted_files[i])
+    orig_img = Image.open("ILSVRC2012_img_val/" + sorted_files[i])
 
-
+    # Preprocessing only works for colour images:
+    if (orig_img.mode == "RGB"): 
         mean = [ 0.485, 0.456, 0.406 ]
         std = [ 0.229, 0.224, 0.225 ]
 
@@ -71,10 +68,10 @@ for i in range(N):
             transforms.CenterCrop(224),
             transforms.ToTensor(),
             transforms.Normalize(mean = mean,
-                 std = std)])(orig_img)
+                                 std = std)])(orig_img)
         
-        print(im.shape)
-        quit()
+        #print(im.shape)
+        #quit()
 
         r, loop_i, label_orig, label_pert, pert_image = deepfool(im, net)
 
@@ -115,7 +112,7 @@ for i in range(N):
         # Write image file to directory to hold perturbed images
         if (os.path.exists('pert_imgs') != 1):
             os.mkdir('pert_imgs')
-            tf(pert_image.cpu()[0]).save('pert_imgs/' + sorted_files[i], 'JPEG')
+        tf(pert_image.cpu()[0]).save('pert_imgs/' + sorted_files[i], 'JPEG')
     
 
         ## Commented this out because u probably don't want a bunch of images popping up
@@ -130,4 +127,4 @@ for i in range(N):
 
 # Compute average robustness (rho) for the simulation (See eqn 15 in DeepFool paper)
 rho = (1/N)*rho_sum
-print(rho)
+print("Average robustness:", rho)
