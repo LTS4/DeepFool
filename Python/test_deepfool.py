@@ -43,16 +43,19 @@ def clip_tensor(A, minv, maxv):
     A = torch.min(A, maxv*torch.ones(A.shape))
     return A
 
-# Get list of files in ImageNet directory (you gotta save this in DeepFool/Python to get it to work like this)
-for (root, dirs, files) in os.walk("ILSVRC2012_img_val", topdown=True):
+base = "../data/ILSVRC2012_img_val/raw"
+
+# Get list of files in ImageNet directory (MAKE SURE `base` ABOVE IS CORRECT)
+
+for (root, dirs, files) in os.walk(base, topdown=True):
     sorted_files = sorted(files, key=lambda item: int(item[18:23]))
 
 # Now for every image:
 for i in range(N):
-    orig_img = Image.open("ILSVRC2012_img_val/" + sorted_files[i])
+    orig_img = Image.open(base + sorted_files[i])
 
     # Preprocessing only works for colour images:
-    if (orig_img.mode == "RGB"): 
+    if (orig_img.mode == "RGB"):
         mean = [ 0.485, 0.456, 0.406 ]
         std = [ 0.229, 0.224, 0.225 ]
 
