@@ -47,9 +47,17 @@ base = "../data/ILSVRC2012_img_val/"
 
 # Get list of files in ImageNet directory (MAKE SURE `base` ABOVE IS CORRECT)
 
-for (root, dirs, files_raw) in os.walk(base + "raw/", topdown=True):
-    files = [f for f in files_raw if f != ".gitignore"] # Remove .gitignore
-    sorted_files = sorted(files, key=lambda item: int(item[18:23]))
+# First get the list of already perturbed files
+pert_walk_gen = os.walk(base + "perturbed/", topdown = True)
+_, _, pert_files_raw = next(pert_walk_gen)
+pert_files = [p for p in pert_files_raw if p != ".gitignore"] # Remove .gitignore
+
+# Now process the files
+raw_walk_gen = os.walk(base + "raw/", topdown=True)
+_, _, files_raw = next(raw_walk_gen)
+files_tmp = [f for f in files_raw if f != ".gitignore"] # Remove .gitignore
+files = [f for f in files_tmp if not (f in pert_files)]
+sorted_files = sorted(files, key=lambda item: int(item[18:23]))
 
 # Now for every image:
 for i in range(N):
