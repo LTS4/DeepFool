@@ -13,7 +13,7 @@ import torchvision.models as models
 from PIL import Image
 from deepfool import deepfool
 import os
-import cv2
+#import cv2
 
 # Number of images to perturb
 N = 1000
@@ -43,19 +43,23 @@ def clip_tensor(A, minv, maxv):
     A = torch.min(A, maxv*torch.ones(A.shape))
     return A
 
-base = "../data/ILSVRC2012_img_val/raw"
+base = "../data/ILSVRC2012_img_val/"
 
 # Get list of files in ImageNet directory (MAKE SURE `base` ABOVE IS CORRECT)
 
-for (root, dirs, files) in os.walk(base, topdown=True):
+for (root, dirs, files_raw) in os.walk(base + "raw/", topdown=True):
+    files = [f for f in files_raw if f != ".gitignore"] # Remove .gitignore
     sorted_files = sorted(files, key=lambda item: int(item[18:23]))
 
 # Now for every image:
 for i in range(N):
-    orig_img = Image.open(base + sorted_files[i])
+    orig_img = Image.open(base + "raw/" + sorted_files[i])
+    
+    # Preprocessing only works for colour images
+    if (orig_img.mode == "L"):
+        orig_img = orig_img.convert(mode="RGB")
 
-    # Preprocessing only works for colour images:
-    if (orig_img.mode == "RGB"):
+    if (orig_img.mode == "RGB"):    # Belt-and-suspenders check
         mean = [ 0.485, 0.456, 0.406 ]
         std = [ 0.229, 0.224, 0.225 ]
 
@@ -113,9 +117,10 @@ for i in range(N):
               transforms.CenterCrop(224)])
 
         # Write image file to directory to hold perturbed images
-        if (os.path.exists('pert_imgs') != 1):
-            os.mkdir('pert_imgs')
-        tf(pert_image.cpu()[0]).save('pert_imgs/' + sorted_files[i], 'JPEG')
+        if (os.path.exists(base + 'perturbed/') != 1):
+            os.mkdir(base + 'perturbed')
+        tf(pert_image.cpu()[0]).save(
+            base + 'perturbed/' + sorted_files[i], 'JPEG')
     
 
         ## Commented this out because u probably don't want a bunch of images popping up
@@ -127,6 +132,8 @@ for i in range(N):
 
         # Add to cumulative sum term to get rho (See eqn 15 in DeepFool paper)
         rho_sum = rho_sum + r_norm / np.linalg.norm(img_vect)
+    else:
+        raise TypeError(f"expected Image Mode RBG, got {orig_img.mode}")
 
 # Compute average robustness (rho) for the simulation (See eqn 15 in DeepFool paper)
 rho = (1/N)*rho_sum
