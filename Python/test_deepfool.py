@@ -62,8 +62,8 @@ def main():
     sorted_files = sorted(files, key=lambda item: int(item[18:23]))
 
     # Now for every image:
-    for i in range(N):
-        orig_img = Image.open(base + "raw/" + sorted_files[i])
+    for _, name in enumerate(sorted_files):
+        orig_img = Image.open(base + "raw/" + name)
         
         # Preprocessing only works for colour images
         if (orig_img.mode == "L"):
@@ -130,7 +130,7 @@ def main():
             if (os.path.exists(base + 'perturbed/') != 1):
                 os.mkdir(base + 'perturbed')
             tf(pert_image.cpu()[0]).save(
-                base + 'perturbed/' + sorted_files[i], 'JPEG')
+                base + 'perturbed/' + name, 'JPEG')
         
 
             ## Commented this out because u probably don't want a bunch of images popping up
